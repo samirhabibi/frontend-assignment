@@ -13,22 +13,31 @@ const List = styled.ul`
   margin: auto;
 `;
 
+interface ListItem {
+  id: number;
+  text: string;
+}
+
 const Task1: FunctionComponent = () => {
   // Initialize the state with an array of list items
-  const [items, setItems] = useState([
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-    "Item 5",
-  ]);
+  const [listItems, setListItems] = useState<ListItem[]>([]);
+
+  const addItem = () => {
+    const newItem: ListItem = {
+      id: listItems.length + 1,
+      text: `Item ${listItems.length + 1}`,
+    };
+    setListItems((prevItems) => [...prevItems, newItem]);
+  };
 
   return (
     <div>
+      <h1>Dynamic List Example</h1>
+      <button onClick={addItem}>Add Item</button>
       <List>
         {/* Iterate over the listItems array using map */}
-        {items.map((item, index) => (
-          <ListItem key={index}>{item}</ListItem>
+        {items.map((item) => (
+          <ListItem key={index}>{item.text}</ListItem>
         ))}
       </List>
     </div>
