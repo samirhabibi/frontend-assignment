@@ -26,12 +26,26 @@ const AppContainer = styled.div`
   border-radius: 4px;
 `;
 
-const Title = styled.h1`
-  margin-bottom: 20px;
+const SearchInput = styled.input`
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 35%;
+  margin-top: 20px;
+`;
+
+const HorizontalLine = styled.hr`
+  margin-top: 12px;
+  border: none;
+  background-color: #ccc;
+  height: 1px;
 `;
 
 const Task6: React.FunctionComponent = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [inputValue, setInputValue] = useState("");
 
   const handleAddTodo = (text: string, description: string) => {
     const newTodo: TodoItem = {
@@ -53,6 +67,19 @@ const Task6: React.FunctionComponent = () => {
     );
   };
 
+    // Calculate the filtered todos to display
+  const filteredTodos = todos.filter(
+    (todo) =>
+      todo.text.toLowerCase().includes(inputValue.toLowerCase()) ||
+      todo.description.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
+  // Event handler function for input change
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+  };
+
   const handleDeleteTodo = (id: number) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
@@ -60,6 +87,15 @@ const Task6: React.FunctionComponent = () => {
   return (
     <AppContainer>
       <InputTodo onAddTodo={handleAddTodo} />
+
+      <HorizontalLine />
+
+      <SearchInput
+        type="text"
+        placeholder="Search todos..."
+        value={inputValue}
+        onChange={handleInputChange}
+      />
       <TodoList
         todos={todos}
         onToggleTodo={handleToggleTodo}
